@@ -72,7 +72,7 @@ export default class Runner {
 
     //set Popup content
     this.popupContent.innerHTML = `
-      <p style="margin-bottom: 12px; text-align: center"><b>${this.name}</b></p>
+      <p style="margin-bottom: 8px; text-align: center"><b>${this.name}</b></p>
       <p>AQI: ${(this.speedPerFrame*80000).toFixed(2)}</p>
       <input id="speed" type="range" min="0.0001" max="0.0011" step="0.0001" value="${this.speedPerFrame}">
       <p>Speed: ${(this.speedPerFrame*25000).toFixed(2)} Km/h<p>

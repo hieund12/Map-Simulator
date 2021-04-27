@@ -1,5 +1,6 @@
 import OLMap from './components/map';
 import route1 from './data/route1.json';
+import route1reverse from './data2/route1-reverse.json';
 import route2 from './data/route2.json';
 import route3 from './data/route3.json';
 import route4 from './data/route4.json';
@@ -30,6 +31,9 @@ document.querySelector('#map').appendChild(startButton)
 
 const features1 = new GeoJSON().readFeatures(route1, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'})
 map.addRoute({features: features1})
+const features1Reverse = new GeoJSON().readFeatures(route1reverse, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'})
+map.addRoute({features: features1Reverse})
+
 const features2 = new GeoJSON().readFeatures(route2, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'})
 map.addRunner({features: features2, name: 'Algorithm 1', kmRoute: 8.3})
 const features3 = new GeoJSON().readFeatures(route3, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'})

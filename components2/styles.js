@@ -46,7 +46,7 @@ export default {
       const style = new Style({
         image: carOlIcon,
       })
-      const scale = 0.5/resolution > 0.15 ? 0.5/resolution : 0.15
+      const scale = 0.28/resolution > 0.08 ? 0.28/resolution : 0.08
       style.getImage().setScale(scale)
       return style
     },
@@ -109,7 +109,7 @@ export default {
       const style = new Style({
         image: bikeOlIcon,
       })
-      const scale = 0.3/resolution < 0.1 ? 0.1 : 0.3/resolution
+      const scale = 0.1/resolution < 0.08 ? 0.08 : 0.1/resolution
       style.getImage().setScale(scale)
       return style
     },

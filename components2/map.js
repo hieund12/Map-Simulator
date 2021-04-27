@@ -21,9 +21,9 @@ export default class OLMap {
     this.map = new Map({
       target: document.getElementById(target),
       view: new View({
-        center: [11879900, 1205800],
-        zoom: 15,
-        minZoom: 2,
+        center: [11877500, 1206600],
+        zoom: 14.2,
+        minZoom: 4,
         maxZoom: 19,
       }),
       layers: [
@@ -69,7 +69,8 @@ export default class OLMap {
     this.routes.push(route);
     this.routeLayer.getSource().addFeatures(route.features)
     route.on('moving', () => {
-      route.speedPerFrame = 0.001 * (Math.random() + 0.3) * speed
+      route.speedPerFrame = 0.001 * (Math.random() + 0.3) * speed;
+      if (this.isInitAir) return;
       const currentCoor = route.route.getCoordinateAt(route.distance)
       this.createAirZone(currentCoor)
     })
@@ -116,12 +117,21 @@ export default class OLMap {
   }
 
   createAirZone(coor) {
-    const airZone = new Feature({
-      type: 'airZone',
-      geometry: new Point(coor),
-    });
-    airZone.setStyle(styles['airZone'])
-    this.airLayer.getSource().addFeature(airZone)
+    let airZones = []
+    for (let index = 0; index < 2; index++) {
+      // 11879104.186472563, 1204961.2696389516, 6.5138223988206265
+      const airZone = new Feature({
+        type: 'airZone',
+        geometry: new Point([
+          coor[0] + Math.random() * 500 * index,
+          coor[1] + Math.random() * 500 * index,
+          coor[2] + Math.random() * 500 * index
+        ]),
+      });
+      airZone.setStyle(styles['airZone'])
+      airZones.push(airZone)
+    }
+    this.airLayer.getSource().addFeatures(airZones)
   }
 
   start() {
@@ -135,6 +145,15 @@ export default class OLMap {
     };
     this.routeLayer.on('postrender', this.eventBinding);
     this.map.render();
+
+
+    setTimeout(() => {
+      this.isInitAir = true;
+      for (let index = 0; index < 100; index = index + 3) {
+        const currentCoor = this.routes[0].route.getCoordinateAt(index*0.01)
+        this.createAirZone(currentCoor)
+      }
+    }, 6000)
   }
 
   move(event) {
@@ -157,7 +176,8 @@ export default class OLMap {
 
   stopAnimation() {
     this.routeAnimating = [];
-    this.runnerAnimating = []
+    this.runnerAnimating = [];
+    this.isInitAir = false;
     this.routeLayer.un('postrender', this.eventBinding)
     this.routes.forEach((r) => {
       r.stopAnimation()
